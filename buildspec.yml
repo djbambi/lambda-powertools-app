@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.13
+      python: 3.11
     commands:
       - pip install aws-sam-cli
   pre_build:
@@ -13,10 +13,10 @@ phases:
       - sam build
   build:
     commands:
-      - sam package --s3-bucket lambda-powertools-artifacts-2025 --output-template-file packaged.yaml
+      - sam deploy --template-file .aws-sam/build/template.yaml --stack-name lambda-powertools-stack --s3-bucket lambda-powertools-artifacts-2025 --capabilities CAPABILITY_IAM
   post_build:
     commands:
-      - echo "Build completed on `date`"
+      - echo "Deployment completed on `date`"
 artifacts:
   files:
-    - packaged.yaml
+    - .aws-sam/build/template.yaml
